@@ -52,9 +52,9 @@ router.post('/users/:_id/exercises', (req, res) => {
   
   exerciseLogs[_id].log.push(logEntry);
   exerciseLogs[_id]['count']++
-  //
-  console.warn( exerciseLogs )
-  res.json(exerciseLogs[_id]);
+  //  console.warn( exerciseLogs )
+  const lastLog = exerciseLogs[_id].log[exerciseLogs[_id].log.length - 1]
+  res.json({ username: exerciseLogs[_id]['username'], description: lastLog['description'] });
 });
 
 
