@@ -1,6 +1,8 @@
 // Import necessary modules
 const express = require('express');
 const router = express.Router();
+const uuid = require('uuid');
+
 
 // Sample data storage (replace with a database in production)
 const users = [];
@@ -9,23 +11,17 @@ let exerciseLogs = {};
 // POST /api/users to create a new user
 router.post('/users', (req, res) => {
   const { username } = req.body;
-  const newUser = { username, _id: users.length + 1 };
+  const newUserId = uuid.v4(); // Generates a random UUID in hexadecimal format
+  const newUser = { username, _id: newUserId };
   users.push(newUser);
   res.json(newUser);
 });
 
 // GET /api/users to get a list of all users
 router.get('/users', (req, res) => {
-    /*
+
   res.json(users);
-  */
- // Ensure each user object contains both 'username' and '_id' properties
- const formattedUsers = users.map(user => ({
-    username: user.username,
-    _id: user._id
-  }));
   
-  res.json(formattedUsers);
 });
 
 // POST /api/users/:_id/exercises to add a new exercise for a user
