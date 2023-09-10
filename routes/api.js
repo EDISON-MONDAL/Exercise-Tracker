@@ -16,7 +16,16 @@ router.post('/users', (req, res) => {
 
 // GET /api/users to get a list of all users
 router.get('/users', (req, res) => {
+    /*
   res.json(users);
+  */
+ // Ensure each user object contains both 'username' and '_id' properties
+ const formattedUsers = users.map(user => ({
+    username: user.username,
+    _id: user._id
+  }));
+  
+  res.json(formattedUsers);
 });
 
 // POST /api/users/:_id/exercises to add a new exercise for a user
