@@ -30,15 +30,33 @@ router.post('/users/:_id/exercises', (req, res) => {
   const { description, duration, date } = req.body;
 
   // Create an exercise log entry
-  const logEntry = { description, duration: parseInt(duration), date: date || new Date().toISOString().slice(0, 10) };
+  const logEntry = { description, duration: parseInt(duration), date: date || new Date().toDateString() };
 
-  if (!exerciseLogs[_id]) {
-    exerciseLogs[_id] = { user: users.find(user => user._id === parseInt(_id)), log: [] };
+
+  let found = false;
+  let username = ''
+
+  for (let i = 0; i < users.length; i++) {
+    if (users[i]['_id'] == _id ) {
+        found = true;
+        username = users[i]['username']
+        break;
+    }
   }
 
+
+  if (!exerciseLogs[_id] && found == true) {
+    exerciseLogs[_id] = { username: username, _id: _id, count: 0, log: [] };
+  }
+
+  
   exerciseLogs[_id].log.push(logEntry);
+  exerciseLogs[_id]['count']++
+  //
+  console.warn( exerciseLogs )
   res.json(exerciseLogs[_id]);
 });
+
 
 // GET /api/users/:_id/logs to retrieve a user's exercise log
 router.get('/users/:_id/logs', (req, res) => {
