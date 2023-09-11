@@ -30,8 +30,8 @@ router.get('/users', (req, res) => {
 
 // POST /api/users/:_id/exercises to add a new exercise for a user
 router.post('/users/:_id/exercises', (req, res) => {
-  //const { _id } = req.params;
-  const { _id, description, duration, date } = req.body;
+  const { _id } = req.params;
+  const { description, duration, date } = req.body;
 
   // Create an exercise log entry
   const logEntry = { description, duration: parseInt(duration), date: date || new Date().toDateString() };
