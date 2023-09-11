@@ -68,17 +68,17 @@ router.post('/users/:_id/exercises', (req, res) => {
   
   const lastLog = users[index]['log'][ users[index]['log'].length - 1]
   //res.json({ username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] });
-
+  /*
   const exercise = {}
   exercise['_id'] = users[index]['_id'],
   exercise['username'] = users[index]['username'], 
   exercise['date'] = lastLog['date'], 
   exercise['duration'] = lastLog['duration'],   
   exercise['description'] = lastLog['description'], 
-  
+  */
   
 
-  res.json( exercise )
+  res.json( users[index] )
   
 });
 
