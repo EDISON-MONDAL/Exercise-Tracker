@@ -48,7 +48,7 @@ router.post('/users/:_id/exercises', (req, res) => {
   }
   
   
-  
+  /*
   if(found){
     // count
     if(!users[index]['count']){
@@ -68,17 +68,29 @@ router.post('/users/:_id/exercises', (req, res) => {
   
   const lastLog = users[index]['log'][ users[index]['log'].length - 1]
   //res.json({ username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] });
-  /*
+  
   const exercise = {}
   exercise['_id'] = users[index]['_id'],
   exercise['username'] = users[index]['username'], 
   exercise['date'] = lastLog['date'], 
   exercise['duration'] = lastLog['duration'],   
   exercise['description'] = lastLog['description'], 
-  */
+  
   
 
   res.json( users[index] )
+  */
+  if(!found) {
+    res.status(404).json({ message: 'User not found' });
+    return;
+  } else {
+    // Add the exercise log entry to the user's log
+    users[index]['log'].push(logEntry);
+    users[index]['count']++;
+
+    // Send the updated user object as the response
+    res.json(users[index]);
+  }
   
 });
 
