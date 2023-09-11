@@ -33,7 +33,10 @@ router.post('/users/:_id/exercises', (req, res) => {
   const { _id } = req.params;
   const { description, duration, date } = req.body;
 
-  
+  // Create an exercise log entry
+  const logEntry = { description, duration: parseInt(duration), date: date || new Date().toDateString() };
+
+
   let found = false;
   let index = 0
 
@@ -85,9 +88,6 @@ if(!users[index]['log']){
     users[index]['log'] = []
 }
 
-// Create an exercise log entry
-const logEntry = { description, duration: parseInt(duration), date: date || new Date().toDateString() };
-
 users[index]['log'].push(logEntry);
 users[index]['count']++
 
@@ -103,16 +103,10 @@ users[index]['count']++
   
   
   const lastLog = users[index]['log'][ users[index]['log'].length - 1]
-  //res.json({ username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] });
+  
   
   const exercise = { username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] }
-  /*
-  exercise['_id'] = users[index]['_id'],
-  exercise['username'] = users[index]['username'], 
-  exercise['date'] = lastLog['date'], 
-  exercise['duration'] = lastLog['duration'],   
-  exercise['description'] = lastLog['description'], 
-  */
+  
   
 
   res.json( exercise )
