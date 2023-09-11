@@ -4,18 +4,6 @@ const router = express.Router();
 const uuid = require('uuid');
 
 
-// Function to generate a custom ID
-function generateCustomId(length) {
-    const characters = '0123456789abcdef';
-    let customId = '';
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      customId += characters.charAt(randomIndex);
-    }
-    return customId;
-  }
-
-
 // Sample data storage (replace with a database in production)
 const users = [];
 //let exerciseLogs = {};
@@ -24,8 +12,7 @@ const users = [];
 router.post('/users', (req, res) => {
   const { username } = req.body;
   const newUserId = uuid.v4(); // Generates a random UUID in hexadecimal format
-  const customId = generateCustomId(24);
-  const newUser = { username, _id: customId };
+  const newUser = { username, _id: newUserId };
   users.push(newUser);
   res.json(newUser);
 });
@@ -112,7 +99,7 @@ users[index]['count']++
 
 
   
-  //console.warn( users[index] )
+  console.warn( users[index] )
   
   
   const lastLog = users[index]['log'][ users[index]['log'].length - 1]
@@ -123,28 +110,7 @@ users[index]['count']++
   
 
   res.json( exercise )
-  /*
-  if(!found) {
-    res.status(404).json({ message: 'User not found' });
-    return;
-  } else {
-    // count
-    if(!users[index]['count']){
-        users[index]['count'] = 0
-    }
-    // log array
-    if(!users[index]['log']){
-        users[index]['log'] = []
-    }
-
-    // Add the exercise log entry to the user's log
-    users[index]['log'].push(logEntry);
-    users[index]['count']++;
-
-    // Send the updated user object as the response
-    res.json(users[index]);
-  }
-  */
+  
   
 });
 
