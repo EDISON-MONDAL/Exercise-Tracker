@@ -148,7 +148,7 @@ router.get('/users/:_id/logs', (req, res) => {
             queryArr.push(log[i])
         }
 
-        if(queryArr.length == limit){
+        if(queryArr.length == parseInt(limit)){
             break
         }
     }
