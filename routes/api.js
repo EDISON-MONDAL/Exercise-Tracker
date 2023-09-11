@@ -90,11 +90,15 @@ if(!users[index]['log']){
 users[index]['log'].push(logEntry);
 users[index]['count']++
 
-const lastLog = users[index]['log'][ users[index]['log'].length - 1]
+//const lastLog = users[index]['log'][ users[index]['log'].length - 1]
 
 //const exercise = { username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] }
 
-const exercise = { username: users[index]['username'], lastLog, _id: users[index]['_id'] }
+//const exercise = { username: users[index]['username'], lastLog, _id: users[index]['_id'] }
+
+const { username, _Id, log } = users[index];
+const lastLog = log[log.length - 1];
+const exercise = { username, lastLog, _Id };
 
 res.json( exercise )
   
