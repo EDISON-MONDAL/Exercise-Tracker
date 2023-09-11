@@ -105,7 +105,7 @@ users[index]['count']++
   const lastLog = users[index]['log'][ users[index]['log'].length - 1]
   //res.json({ username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] });
   
-  const exercise = { username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] }
+  const exercise = { username: users[index]['username'], description: lastLog['description'], duration: parseInt(lastLog['duration']), date: lastLog['date'].toDateString() , _id: users[index]['_id'] }
   /*
   exercise['_id'] = users[index]['_id'],
   exercise['username'] = users[index]['username'], 
