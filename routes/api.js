@@ -79,7 +79,7 @@ router.post('/users/:_id/exercises', (req, res) => {
   */
   
 
-  res.json( exercise )
+  return res.json( exercise )
   /*
   if(!found) {
     res.status(404).json({ message: 'User not found' });
