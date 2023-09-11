@@ -90,45 +90,21 @@ if(!users[index]['log']){
 users[index]['log'].push(logEntry);
 users[index]['count']++
 
-//const lastLog = users[index]['log'][ users[index]['log'].length - 1]
-
-//const exercise = { username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] }
-
-//const exercise = { username: users[index]['username'], lastLog, _id: users[index]['_id'] }
 
 
-/*
-const { username, _Id, log } = users[index];
-const lastLog = log[log.length - 1];
-const exercise = { username, lastLog, _Id };
 
-// Add the exercise fields to the user object
-users[index]['exercise'] = logEntry;
 
-res.json( users[index] )
-*/
 
-// Create a new object to merge with the user object
-const exercise = {
-    description,
-    duration,
-    date
-  };
 
-  // Merge the exercise object with the user object
-  const mergedObject = Object.assign({}, users[index], exercise);
-
-  // Send the merged object as the response
-  res.json(mergedObject);
 
   
   //console.warn( users[index] )
   
   
-  //const lastLog = users[index]['log'][ users[index]['log'].length - 1]
+  const lastLog = users[index]['log'][ users[index]['log'].length - 1]
   //res.json({ username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] });
   
-  //const exercise = { username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] }
+  const exercise = { username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] }
   /*
   exercise['_id'] = users[index]['_id'],
   exercise['username'] = users[index]['username'], 
@@ -138,7 +114,7 @@ const exercise = {
   */
   
 
-  //return res.json( exercise )
+  res.json( exercise )
   /*
   if(!found) {
     res.status(404).json({ message: 'User not found' });
