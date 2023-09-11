@@ -89,7 +89,6 @@ if(!users[index]['log']){
 }
 
 users[index]['log'].push(logEntry);
-users[index]['exercise'].push({ username: users[index]['username'], description, duration: parseInt(duration), date: date || new Date().toDateString(), _id: users[index]['_id'] });
 users[index]['count']++
 
 
@@ -116,7 +115,7 @@ users[index]['count']++
   */
   
 
-  res.json( users[index]['exercise'] )
+  res.json( exercise )
   /*
   if(!found) {
     res.status(404).json({ message: 'User not found' });
