@@ -33,10 +33,7 @@ router.post('/users/:_id/exercises', (req, res) => {
   const { _id } = req.params;
   const { description, duration, date } = req.body;
 
-  // Create an exercise log entry
-  const logEntry = { description, duration: parseInt(duration), date: date || new Date().toDateString() };
-
-
+  
   let found = false;
   let index = 0
 
@@ -87,6 +84,9 @@ router.post('/users/:_id/exercises', (req, res) => {
 if(!users[index]['log']){
     users[index]['log'] = []
 }
+
+// Create an exercise log entry
+const logEntry = { description, duration: parseInt(duration), date: date || new Date().toDateString() };
 
 users[index]['log'].push(logEntry);
 users[index]['count']++
