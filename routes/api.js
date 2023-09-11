@@ -37,7 +37,7 @@ router.post('/users/:_id/exercises', (req, res) => {
   let username = ''
 
   for (let i = 0; i < users.length; i++) {
-    if (users[i]['_id'] === _id ) {
+    if (users[i]['_id'] == _id ) {
         found = true;
         username = users[i]['username']
         break;
