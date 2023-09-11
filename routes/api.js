@@ -139,12 +139,26 @@ router.get('/users/:_id/logs', (req, res) => {
 
         
     for (let i = 0; i < log.length; i++){
+        const olddate = log[i]['date']
+        const oldYear = olddate.getFullYear()
+        const oldMonth = olddate.getMonth()
+        const oldDate = olddate.getDate()
 
-        if(from != undefined && to != undefined && log[i]['date'] >= new Date(from).toDateString() && log[i]['date'] < new Date(to).toDateString()){
+        const querydatefrom = new Date(from)
+        const queryYearfrom = querydatefrom.getFullYear()
+        const queryMonthfrom = querydatefrom.getMonth()
+        const queryDatafrom = querydatefrom.getDate()
+
+        const querydateto = new Date(from)
+        const queryYearto = querydateto.getFullYear()
+        const queryMonthto = querydateto.getMonth()
+        const queryDatato = querydateto.getDate()
+
+        if(from != undefined && to != undefined && (oldYear >= queryYearfrom && oldMonth >= queryMonthfrom && oldDate>= queryDatafrom ) && (oldYear <= queryYearto && oldMonth <= queryMonthto && oldDate < queryDatato) ){
             queryArr.push(log[i])
-        }else if(from != undefined && log[i]['date'] >= new Date(from).toDateString() ){ 
+        }else if(from != undefined && (oldYear >= queryYearfrom && oldMonth >= queryMonthfrom && oldDate>= queryDatafrom ) ){ 
             queryArr.push(log[i])
-        } else if(to != undefined && log[i]['date'] < new Date(to).toDateString()) {
+        } else if(to != undefined && (oldYear <= queryYearto && oldMonth <= queryMonthto && oldDate < queryDatato) ) {
             queryArr.push(log[i])
         }
 
