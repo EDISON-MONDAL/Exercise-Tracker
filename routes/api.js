@@ -17,6 +17,8 @@ router.post('/users', (req, res) => {
   res.json(newUser);
 });
 
+
+
 // GET /api/users to get a list of all users
 router.get('/users', (req, res) => {
 
@@ -90,7 +92,9 @@ users[index]['count']++
 
 const lastLog = users[index]['log'][ users[index]['log'].length - 1]
 
-const exercise = { username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] }
+//const exercise = { username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] }
+
+const exercise = { username: users[index]['username'], lastLog, _id: users[index]['_id'] }
 
 res.json( exercise )
   
