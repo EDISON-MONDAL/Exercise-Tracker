@@ -113,15 +113,14 @@ const exercise = {
     description,
     duration,
     date
-    };
-    
-    // Merge the exercise object with the user object
-    const mergedObject = { ...users[index], ...exercise };
-    
-    // Send the merged object as the response
-    res.json(mergedObject);
+  };
 
-    
+  // Merge the exercise object with the user object
+  const mergedObject = Object.assign({}, users[index], exercise);
+
+  // Send the merged object as the response
+  res.json(mergedObject);
+
   
   //console.warn( users[index] )
   
