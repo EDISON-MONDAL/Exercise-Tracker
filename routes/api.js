@@ -34,32 +34,27 @@ router.post('/users/:_id/exercises', (req, res) => {
 
 
   let found = false;
-  let index = 0
+  let username = ''
 
   for (let i = 0; i < users.length; i++) {
     if (users[i]['_id'] === _id ) {
         found = true;
-        
-        index = i
+        username = users[i]['username']
         break;
     }
   }
 
 
-  if(found)  {
-    // count key
-    if(!users[index]['count']){ users[index]['count'] = 0 }
-    // log array key
-    if(!users[index]['log']){ users[index]['log'] = [] }
-
-
-    users[index]['log'].push(logEntry);
-    users[index]['count']++
+  if (!exerciseLogs[_id] && found == true) {
+    exerciseLogs[_id] = { username: username, _id: _id, count: 0, log: [] };
   }
-  //console.warn( users[index] )
+
   
-  const lastLog = users[index].log[ users[index].log.length - 1 ]
-  res.json({ username: users[index]['username'], description: lastLog['description'] });
+  exerciseLogs[_id].log.push(logEntry);
+  exerciseLogs[_id]['count']++
+  //  console.warn( exerciseLogs )
+  const lastLog = exerciseLogs[_id].log[exerciseLogs[_id].log.length - 1]
+  res.json({ username: exerciseLogs[_id]['username'], description: lastLog['description'] });
 });
 
 
