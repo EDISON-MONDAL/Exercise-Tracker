@@ -39,7 +39,7 @@ router.post('/users/:_id/exercises', (req, res) => {
   let index = 0
 
   for (let i = 0; i < users.length; i++) {
-    if (users[i]['_id'] == _id ) {
+    if (users[i]['_id'] === _id ) {
         found = true;
         index = i
         
@@ -61,6 +61,9 @@ router.post('/users/:_id/exercises', (req, res) => {
 
     users[index]['log'].push(logEntry);
     users[index]['count']++
+  } else {
+    res.status(404).json({ message: 'User not found' });
+    return;
   }
   
   //console.warn( users[index] )
