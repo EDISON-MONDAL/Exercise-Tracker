@@ -84,6 +84,15 @@ router.post('/users/:_id/exercises', (req, res) => {
     res.status(404).json({ message: 'User not found' });
     return;
   } else {
+    // count
+    if(!users[index]['count']){
+        users[index]['count'] = 0
+    }
+    // log array
+    if(!users[index]['log']){
+        users[index]['log'] = []
+    }
+    
     // Add the exercise log entry to the user's log
     users[index]['log'].push(logEntry);
     users[index]['count']++;
