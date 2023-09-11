@@ -135,7 +135,7 @@ router.get('/users/:_id/logs', (req, res) => {
   else {
 
     let log = users[index]['log']
-    /*
+    
     let queryArr = []
 
         
@@ -167,9 +167,9 @@ router.get('/users/:_id/logs', (req, res) => {
             break
         }
     }
-    */
     
     
+    /*
     // Filter logs based on 'from' and 'to' dates
     if (from || to) {
         log = log.filter(entry => {
@@ -182,21 +182,25 @@ router.get('/users/:_id/logs', (req, res) => {
     if (limit) {
         log = log.slice(0, parseInt(limit));
     }
+    */
     
     
-    console.warn(log)
+    //console.warn(log)
+    console.warn(queryArr)
     
     const resObj = {}
     resObj['_id'] = users[index]['_id']
     resObj['username'] = users[index]['username']
-    if(from != undefined && new Date(from).toDateString() != 'Invalid Date'){
+    if(from != undefined && !isNaN(new Date(from))){
         resObj['from'] = from
     }
-    if(to != undefined && new Date(to).toDateString() != 'Invalid Date'){
+    if(to != undefined && !isNaN(new Date(to))){
         resObj['to'] = to
     }
-    resObj['count'] = log.length
-    resObj['log'] = log
+    //resObj['count'] = log.length
+    //resObj['log'] = log
+    resObj['count'] = queryArr.length
+    resObj['log'] = queryArr
 
     return res.json( resObj );
  }
