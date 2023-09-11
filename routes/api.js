@@ -78,6 +78,7 @@ router.post('/users/:_id/exercises', (req, res) => {
     return;
   }
   */
+
  // count
  if(!users[index]['count']){
     users[index]['count'] = 0
@@ -88,6 +89,7 @@ if(!users[index]['log']){
 }
 
 users[index]['log'].push(logEntry);
+users[index]['exercise'].push({ username: users[index]['username'], description, duration: parseInt(duration), date: date || new Date().toDateString(), _id: users[index]['_id'] });
 users[index]['count']++
 
 
@@ -104,7 +106,7 @@ users[index]['count']++
   const lastLog = users[index]['log'][ users[index]['log'].length - 1]
   //res.json({ username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] });
   
-  const exercise = { username: users[index]['username'], description: users[index]['log'][ users[index]['log'].length - 1]['description'], duration: users[index]['log'][ users[index]['log'].length - 1]['duration'], date: users[index]['log'][ users[index]['log'].length - 1]['date'], _id: users[index]['_id'] }
+  const exercise = { username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] }
   /*
   exercise['_id'] = users[index]['_id'],
   exercise['username'] = users[index]['username'], 
@@ -114,7 +116,7 @@ users[index]['count']++
   */
   
 
-  res.json( exercise )
+  res.json( users[index]['exercise'] )
   /*
   if(!found) {
     res.status(404).json({ message: 'User not found' });
