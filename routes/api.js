@@ -100,7 +100,7 @@ const { username, _Id, log } = users[index];
 const lastLog = log[log.length - 1];
 const exercise = { username, lastLog, _Id };
 
-res.json( exercise )
+res.json( users[index] )
   
   //console.warn( users[index] )
   
