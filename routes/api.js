@@ -96,6 +96,8 @@ users[index]['count']++
 
 //const exercise = { username: users[index]['username'], lastLog, _id: users[index]['_id'] }
 
+
+/*
 const { username, _Id, log } = users[index];
 const lastLog = log[log.length - 1];
 const exercise = { username, lastLog, _Id };
@@ -104,6 +106,22 @@ const exercise = { username, lastLog, _Id };
 users[index]['exercise'] = logEntry;
 
 res.json( users[index] )
+*/
+
+// Create a new object to merge with the user object
+const exercise = {
+    description,
+    duration,
+    date
+    };
+    
+    // Merge the exercise object with the user object
+    const mergedObject = { ...users[index], ...exercise };
+    
+    // Send the merged object as the response
+    res.json(mergedObject);
+
+    
   
   //console.warn( users[index] )
   
