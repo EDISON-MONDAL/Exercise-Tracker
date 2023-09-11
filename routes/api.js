@@ -4,6 +4,18 @@ const router = express.Router();
 const uuid = require('uuid');
 
 
+// Function to generate a custom ID
+function generateCustomId(length) {
+    const characters = '0123456789abcdef';
+    let customId = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      customId += characters.charAt(randomIndex);
+    }
+    return customId;
+  }
+
+
 // Sample data storage (replace with a database in production)
 const users = [];
 //let exerciseLogs = {};
@@ -12,7 +24,8 @@ const users = [];
 router.post('/users', (req, res) => {
   const { username } = req.body;
   const newUserId = uuid.v4(); // Generates a random UUID in hexadecimal format
-  const newUser = { username, _id: newUserId };
+  const customId = generateCustomId(24);
+  const newUser = { username, _id: customId };
   users.push(newUser);
   res.json(newUser);
 });
