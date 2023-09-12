@@ -75,18 +75,17 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
       error: "invalid input"
     })
   } else {
-    const logEntry = { description, duration: parseInt(duration), date: new Date(date).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, '') || new Date().toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, '') }
-    //const exercisesToPush = new exercises(description, duration, date);
-    //console.log(date);
-    //console.log(exercisesToPush);
+    const exercisesToPush = new exercises(description, duration, date);
+    console.log(date);
+    console.log(exercisesToPush);
     try {
-      const foundUser = await users.findOneAndUpdate({ _id: userId }, { $push: { logs: logEntry } }, { new: true });
+      const foundUser = await users.findOneAndUpdate({ _id: userId }, { $push: { logs: exercisesToPush } }, { new: true });
       res.json({
         _id: foundUser._id,
         username: foundUser.username,
-        date: logEntry.date,
-        duration: logEntry.duration,
-        description: logEntry.description,
+        date: exercisesToPush.date,
+        duration: parseInt(exercisesToPush.duration),
+        description: exercisesToPush.description,
       });
     } catch (err) {
       console.log(err);
