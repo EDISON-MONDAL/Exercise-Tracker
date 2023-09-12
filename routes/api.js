@@ -14,19 +14,9 @@ const mongoose = require('mongoose');
 // template object instances
 class exercises {
     constructor(description, duration, date) {
-      //console.log(date);
   
-      if (date) {
-  
-        const formatDate = new Date(date);
-        const options = {
-          weekday: 'short',  // Full name of the weekday (e.g., Monday)
-          month: 'short',   // Abbreviated name of the month (e.g., Jan)
-          day: '2-digit',   // Numeric day of the month (e.g., 1)
-          year: 'numeric'   // Full year (e.g., 1990)
-        };
-        const formattedDate = formatDate.toLocaleDateString('en-US', options);
-        this.date = formattedDate.replace(/,/g, '');
+      if (date) {        
+        this.date = new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, '');
       } else {
         this.date = new Date().toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, '');
       }
@@ -37,7 +27,7 @@ class exercises {
 // template object instances
 
 
-//respond with all the users
+//get all the users
 router.get("/users", async (req, res) => {
     const allUsers = await users.find();
     res.json(allUsers.map(({ username, _id }) => ({ username, _id })));
@@ -94,23 +84,13 @@ router.post("/users/:_id/exercises", async (req, res) => {
       const user = await users.findOne({ _id: req.params._id });
       const { from, to, limit } = req.query;
       let temp = user.logs;
-      /*
-      if (from) {
-        const fromDate = new Date(from)
-        temp = temp.filter(exe => new Date(exe.date) > fromDate);
-      }
-  
-      if (to) {
-        const toDate = new Date(to)
-        temp = temp.filter(exe => new Date(exe.date) < toDate);
-      }
-      */
+      
       if (from || to) {
         temp = temp.filter(entry => {
         const entryDate = new Date(entry.date);
         return (!from || entryDate >= new Date(from)) && (!to || entryDate <= new Date(to));
         });
-    }
+      }
   
       if (limit) {
         temp = temp.slice(0, limit);
