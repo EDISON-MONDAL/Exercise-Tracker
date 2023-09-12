@@ -6,7 +6,7 @@ const uuid = require('uuid');
 
 // Sample data storage (replace with a database in production)
 const users = [];
-const exercise = {};
+//const exercise = {};
 
 // POST /api/users to create a new user
 router.post('/users', (req, res) => {
@@ -26,7 +26,7 @@ router.get('/users', (req, res) => {
   
 });
 
-/*
+
 
 // POST /api/users/:_id/exercises to add a new exercise for a user
 router.post('/users/:_id/exercises', (req, res) => {
@@ -54,7 +54,7 @@ router.post('/users/:_id/exercises', (req, res) => {
     return;
   }
   
-  // //////////////////
+  /*
   if(found){
     // count
     if(!users[index]['count']){
@@ -77,7 +77,7 @@ router.post('/users/:_id/exercises', (req, res) => {
     res.status(404).json({ message: 'User not found' });
     return;
   }
-  ////////////////////////////
+  */
 
  // count
  if(!users[index]['count']){
@@ -119,12 +119,12 @@ users[index]['count']++
 router.get('/users/:_id/logs', (req, res) => {
   const { _id } = req.params;
   const { from, to, limit } = req.query;
-  // //////////////////
+  /*
   if (!exerciseLogs[_id]) {
     res.status(404).json({ message: 'User not found' });
     return;
   }
-  // /////////////////////
+  */
   let found = false;
   let index = 0
 
@@ -144,7 +144,39 @@ router.get('/users/:_id/logs', (req, res) => {
   else {
 
     let log = users[index]['log']
-    
+    /*
+    let queryArr = []
+
+        
+    for (let i = 0; i < log.length; i++){
+        const olddate = log[i]['date']
+        const oldYear = olddate.getFullYear()
+        const oldMonth = olddate.getMonth()
+        const oldDate = olddate.getDate()
+
+        const querydatefrom = new Date(from)
+        const queryYearfrom = querydatefrom.getFullYear()
+        const queryMonthfrom = querydatefrom.getMonth()
+        const queryDatafrom = querydatefrom.getDate()
+
+        const querydateto = new Date(from)
+        const queryYearto = querydateto.getFullYear()
+        const queryMonthto = querydateto.getMonth()
+        const queryDatato = querydateto.getDate()
+
+        if(from != undefined && to != undefined && (oldYear >= queryYearfrom && oldMonth >= queryMonthfrom && oldDate>= queryDatafrom ) && (oldYear <= queryYearto && oldMonth <= queryMonthto && oldDate < queryDatato) ){
+            queryArr.push(log[i])
+        }else if(from != undefined && (oldYear >= queryYearfrom && oldMonth >= queryMonthfrom && oldDate>= queryDatafrom ) ){ 
+            queryArr.push(log[i])
+        } else if(to != undefined && (oldYear <= queryYearto && oldMonth <= queryMonthto && oldDate < queryDatato) ) {
+            queryArr.push(log[i])
+        }
+
+        if(queryArr.length == parseInt(limit)){
+            break
+        }
+    }
+    */
     
     
     
@@ -184,6 +216,5 @@ router.get('/users/:_id/logs', (req, res) => {
  }
   
 });
-*/
 
 module.exports = router;
