@@ -14,9 +14,10 @@ const mongoose = require('mongoose');
 // template object instances
 class exercises {
     constructor(description, duration, date) {
+      //console.log(date);
   
-      if (date) {        
-        this.date = new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, '');
+      if (date) {
+        this.date = new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).replace(/,/g, '');
       } else {
         this.date = new Date().toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, '');
       }
