@@ -26,24 +26,25 @@ router.get('/users', (req, res) => {
   
 });
 
-/*
+
 
 // POST /api/users/:_id/exercises to add a new exercise for a user
 router.post('/users/:_id/exercises', (req, res) => {
   const { _id } = req.params;
   const { description, duration, date } = req.body;
 
-  // Create an exercise log entry
-  const logEntry = { description, duration: parseInt(duration), date: date || new Date().toDateString() };
+  
 
 
   let found = false;
   let index = 0
+  let username = ''
 
   for (let i = 0; i < users.length; i++) {
     if (users[i]['_id'] === _id ) {
         found = true;
         index = i
+        username = users[i]['username']
         
         break;
     }
@@ -53,8 +54,11 @@ router.post('/users/:_id/exercises', (req, res) => {
     res.status(404).json({ message: 'User not found' });
     return;
   }
+
+  // Create an exercise log entry
+  const logEntry = { username, description, duration: parseInt(duration), date: date || new Date().toDateString(), _id };
   
-  // //////////////////
+  /*
   if(found){
     // count
     if(!users[index]['count']){
@@ -77,43 +81,20 @@ router.post('/users/:_id/exercises', (req, res) => {
     res.status(404).json({ message: 'User not found' });
     return;
   }
-  ////////////////////////////
+  */
 
- // count
- if(!users[index]['count']){
-    users[index]['count'] = 0
-}
-// log array
-if(!users[index]['log']){
-    users[index]['log'] = []
-}
-
-users[index]['log'].push(logEntry);
-users[index]['count']++
+ 
 
 
-
-
-
-
-
-
-  
-  console.warn( users[index] )
-  
-  
-  const lastLog = users[index]['log'][ users[index]['log'].length - 1]
-  
-  
-  const exercise = { username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] }
+exercise[_id] = logEntry
   
   
 
-  res.json( exercise )
+  res.json( exercise[_id] )
   
   
 });
-
+/*
 
 // GET /api/users/:_id/logs to retrieve a user's exercise log
 router.get('/users/:_id/logs', (req, res) => {
