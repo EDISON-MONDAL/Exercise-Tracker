@@ -1,147 +1,122 @@
 // Import necessary modules
 const express = require('express');
 const router = express.Router();
-const uuid = require('uuid');
+const mongoose = require('mongoose');
 
+// db structure
+  const userSchema = new mongoose.Schema({
+    username: String,
+    logs: { type: Array, default: [] }
+  })
+  const users = mongoose.model("Users", userSchema);
+// db structure
 
-// Sample data storage (replace with a database in production)
-let users = [];
-const exercise = {};
-
-// POST /api/users to create a new user
-router.post('/users', (req, res) => {
-  const { username } = req.body;
-  const newUserId = uuid.v4(); // Generates a random UUID in hexadecimal format
-  const newUser = { username, _id: newUserId };
-  users.push(newUser);
-  res.json(newUser);
-});
-
-
-
-// GET /api/users to get a list of all users
-router.get('/users', (req, res) => {
-
-  res.json(users);
+// template object instances
+class exercises {
+    constructor(description, duration, date) {
+      //console.log(date);
   
-});
-
-
-
-// POST /api/users/:_id/exercises to add a new exercise for a user
-router.post('/users/:_id/exercises', (req, res) => {
-  const { _id } = req.params;
-  const { description, duration, date } = req.body;
-
+      if (date) {
   
-
-
-  let found = false;
-  let index = 0
-  let username = ''
-
-  for (let i = 0; i < users.length; i++) {
-    if (users[i]['_id'] === _id ) {
-        found = true;
-        index = i
-        username = users[i]['username']
-        
-        break;
+        const formatDate = new Date(date);
+        const options = {
+          weekday: 'short',  // Full name of the weekday (e.g., Monday)
+          month: 'short',   // Abbreviated name of the month (e.g., Jan)
+          day: '2-digit',   // Numeric day of the month (e.g., 1)
+          year: 'numeric'   // Full year (e.g., 1990)
+        };
+        const formattedDate = formatDate.toLocaleDateString('en-US', options);
+        this.date = formattedDate.replace(/,/g, '');
+      } else {
+        this.date = new Date().toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, '');
+      }
+      this.duration = parseInt(duration);
+      this.description = description;
     }
-  }
-  
-  if(!found){
-    res.status(404).json({ message: 'User not found' });
-    return;
-  }
-
-  // Create an exercise log entry
-  const logEntry = { description, duration: parseInt(duration), date: date || new Date().toDateString() };
-  
-  
-
-//exercise[_id] = logEntry
-users[index]['description'] = description
-users[index]['date'] = date || new Date().toDateString()
-users[index]['duration'] = parseInt(duration)
-  
+}
+// template object instances
 
 
-  res.json( users[index] )
-  
-  
-});
-/*
-
-// GET /api/users/:_id/logs to retrieve a user's exercise log
-router.get('/users/:_id/logs', (req, res) => {
-  const { _id } = req.params;
-  const { from, to, limit } = req.query;
-  // //////////////////
-  if (!exerciseLogs[_id]) {
-    res.status(404).json({ message: 'User not found' });
-    return;
-  }
-  // /////////////////////
-  let found = false;
-  let index = 0
-
-  for (let i = 0; i < users.length; i++) {
-    if (users[i]['_id'] === _id ) {
-        found = true;
-        index = i
-        
-        break;
+//respond with all the users
+router.get("/users", async (req, res) => {
+    const allUsers = await users.find();
+    res.json(allUsers.map(({ username, _id }) => ({ username, _id })));
+  });
+  //create user
+  router.post("/users", async (req, res) => {
+    const name = req.body.username;
+    const foundUser = await users.findOne({ username: name });
+    if (!foundUser) {
+      const user = await users.create({ username: name });
+      res.json({
+        username: user.username,
+        _id: user._id
+      })
+    } else {
+      res.json({
+        username: foundUser.username,
+        _id: foundUser._id
+      })
     }
-  }
-
-  if(!found){
-    res.status(404).json({ message: 'User not found' });
-    return;
-  } 
-  else {
-
-    let log = users[index]['log']
-    
-    
-    
-    
-    // Filter logs based on 'from' and 'to' dates
-    if (from || to) {
-        log = log.filter(entry => {
-        const entryDate = new Date(entry.date);
-        return (!from || entryDate >= new Date(from)) && (!to || entryDate <= new Date(to));
+  })
+  //add exercise
+  router.post("/users/:_id/exercises", async (req, res) => {
+    const userId = req.params._id;
+    const { duration, date, description } = req.body;
+    if (!duration || !description) {
+      res.json({
+        error: "invalid input"
+      })
+    } else {
+      const exercisesToPush = new exercises(description, duration, date);
+      console.log(date);
+      console.log(exercisesToPush);
+      try {
+        const foundUser = await users.findOneAndUpdate({ _id: userId }, { $push: { logs: exercisesToPush } }, { new: true });
+        res.json({
+          _id: foundUser._id,
+          username: foundUser.username,
+          date: exercisesToPush.date,
+          duration: parseInt(exercisesToPush.duration),
+          description: exercisesToPush.description,
         });
+      } catch (err) {
+        console.log(err);
+      }
     }
-
-    // Limit the number of logs returned
-    if (limit) {
-        log = log.slice(0, parseInt(limit));
-    }
-    
-    
-    
-    //console.warn(log)
-    //console.warn(queryArr)
-    
-    const resObj = {}
-    resObj['_id'] = users[index]['_id']
-    resObj['username'] = users[index]['username']
-    if(from != undefined && !isNaN(new Date(from))){
-        resObj['from'] = from
-    }
-    if(to != undefined && !isNaN(new Date(to))){
-        resObj['to'] = to
-    }
-    resObj['count'] = log.length
-    resObj['log'] = log
-    //resObj['count'] = queryArr.length
-    //resObj['log'] = queryArr
-
-    return res.json( resObj );
- }
   
-});
-*/
+  })
+  //get logs of a user
+  router.get("/users/:_id/logs", async (req, res) => {
+    try {
+      const user = await users.findOne({ _id: req.params._id });
+      const { from, to, limit } = req.query;
+      let temp = user.logs;
+      if (from) {
+        const fromDate = new Date(from)
+        temp = temp.filter(exe => new Date(exe.date) > fromDate);
+      }
+  
+      if (to) {
+        const toDate = new Date(to)
+        temp = temp.filter(exe => new Date(exe.date) < toDate);
+      }
+  
+      if (limit) {
+        temp = temp.slice(0, limit);
+      }
+      res.json({
+        _id: user._id,
+        username: user.username,
+        count: temp.length,
+        log: temp
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  
+  })
+
+
 
 module.exports = router;
