@@ -22,11 +22,11 @@ class exercises {
 
       const formatDate = new Date(date);
       const options = {
-  weekday: 'short',  // Full name of the weekday (e.g., Monday)
-  month: 'short',   // Abbreviated name of the month (e.g., Jan)
-  day: '2-digit',   // Numeric day of the month (e.g., 1)
-  year: 'numeric'   // Full year (e.g., 1990)
-};
+        weekday: 'short',  // Full name of the weekday (e.g., Monday)
+        month: 'short',   // Abbreviated name of the month (e.g., Jan)
+        day: '2-digit',   // Numeric day of the month (e.g., 1)
+        year: 'numeric'   // Full year (e.g., 1990)
+      };
       const formattedDate = formatDate.toLocaleDateString('en-US', options);
       this.date = formattedDate.replace(/,/g, '');
     } else {
@@ -75,17 +75,18 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
       error: "invalid input"
     })
   } else {
-    const exercisesToPush = new exercises(description, duration, date);
-    console.log(date);
-    console.log(exercisesToPush);
+    const logEntry = { description, duration: parseInt(duration), date: date || new Date().toDateString() }
+    //const exercisesToPush = new exercises(description, duration, date);
+    //console.log(date);
+    //console.log(exercisesToPush);
     try {
-      const foundUser = await users.findOneAndUpdate({ _id: userId }, { $push: { logs: exercisesToPush } }, { new: true });
+      const foundUser = await users.findOneAndUpdate({ _id: userId }, { $push: { logs: logEntry } }, { new: true });
       res.json({
         _id: foundUser._id,
         username: foundUser.username,
-        date: exercisesToPush.date,
-        duration: parseInt(exercisesToPush.duration),
-        description: exercisesToPush.description,
+        date: logEntry.date,
+        duration: logEntry.duration,
+        description: logEntry.description,
       });
     } catch (err) {
       console.log(err);

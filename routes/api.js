@@ -56,7 +56,7 @@ router.post('/users/:_id/exercises', (req, res) => {
   }
 
   // Create an exercise log entry
-  const logEntry = { username, description, duration: parseInt(duration), date: date || new Date().toDateString(), _id };
+  const logEntry = { description, duration: parseInt(duration), date: date || new Date().toDateString() };
   
   
 
