@@ -94,6 +94,7 @@ router.post("/users/:_id/exercises", async (req, res) => {
       const user = await users.findOne({ _id: req.params._id });
       const { from, to, limit } = req.query;
       let temp = user.logs;
+      /*
       if (from) {
         const fromDate = new Date(from)
         temp = temp.filter(exe => new Date(exe.date) > fromDate);
@@ -103,6 +104,13 @@ router.post("/users/:_id/exercises", async (req, res) => {
         const toDate = new Date(to)
         temp = temp.filter(exe => new Date(exe.date) < toDate);
       }
+      */
+      if (from || to) {
+        temp = temp.filter(entry => {
+        const entryDate = new Date(entry.date);
+        return (!from || entryDate >= new Date(from)) && (!to || entryDate <= new Date(to));
+        });
+    }
   
       if (limit) {
         temp = temp.slice(0, limit);
