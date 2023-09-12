@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
     username: String,
     logs: { type: Array, default: [] }
   })
-  const users = mongoose.model("Users", userSchema);
+  const users = mongoose.model("users", userSchema);
 // db structure
 
 // template object instances
@@ -41,9 +41,10 @@ class exercises {
 router.get("/users", async (req, res) => {
     const allUsers = await users.find();
     res.json(allUsers.map(({ username, _id }) => ({ username, _id })));
-  });
-  //create user
-  router.post("/users", async (req, res) => {
+});
+
+//create user
+router.post("/users", async (req, res) => {
     const name = req.body.username;
     const foundUser = await users.findOne({ username: name });
     if (!foundUser) {
@@ -58,9 +59,9 @@ router.get("/users", async (req, res) => {
         _id: foundUser._id
       })
     }
-  })
-  //add exercise
-  router.post("/users/:_id/exercises", async (req, res) => {
+})
+//add exercise
+router.post("/users/:_id/exercises", async (req, res) => {
     const userId = req.params._id;
     const { duration, date, description } = req.body;
     if (!duration || !description) {
@@ -85,7 +86,7 @@ router.get("/users", async (req, res) => {
       }
     }
   
-  })
+})
   //get logs of a user
   router.get("/users/:_id/logs", async (req, res) => {
     try {
