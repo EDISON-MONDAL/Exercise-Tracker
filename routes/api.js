@@ -59,7 +59,13 @@ router.post("/users/:_id/exercises", async (req, res) => {
         error: "invalid input"
       })
     } else {
-      const exercisesToPush = new exercises(description, duration, date);
+      //const exercisesToPush = new exercises(description, duration, date);
+      const exercisesToPush = { 
+        description, 
+        duration: parseInt(duration), 
+        date: new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).replace(/,/g, '') 
+        || new Date().toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, '') }
+        
       console.log(date);
       console.log(exercisesToPush);
       try {
