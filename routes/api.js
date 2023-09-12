@@ -11,20 +11,6 @@ const mongoose = require('mongoose');
   const users = mongoose.model("users", userSchema);
 // db structure
 
-// template object instances
-class exercises {
-    constructor(description, duration, date) {  
-      if (date) {
-        this.date = new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).replace(/,/g, '');
-      } else {
-        this.date = new Date().toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, '');
-      }
-      this.duration = parseInt(duration);
-      this.description = description;
-    }
-}
-// template object instances
-
 
 //get all the users
 router.get("/users", async (req, res) => {
@@ -59,29 +45,31 @@ router.post("/users/:_id/exercises", async (req, res) => {
         error: "invalid input"
       })
     } else {
-      //const exercisesToPush = new exercises(description, duration, date);
+      
       let getDate = ''
+
       if (date) {
         getDate = new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).replace(/,/g, '');
       } else {
         getDate = new Date().toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, '');
       }
-      const exercisesToPush = { 
+
+      const exercisesUpload = { 
         description, 
         duration: parseInt(duration), 
         date: getDate
      }
 
       console.log(date);
-      console.log(exercisesToPush);
+      console.log(exercisesUpload);
       try {
-        const foundUser = await users.findOneAndUpdate({ _id: userId }, { $push: { logs: exercisesToPush } }, { new: true });
+        const foundUser = await users.findOneAndUpdate({ _id: userId }, { $push: { logs: exercisesUpload } }, { new: true });
         res.json({
           _id: foundUser._id,
           username: foundUser.username,
-          date: exercisesToPush.date,
-          duration: parseInt(exercisesToPush.duration),
-          description: exercisesToPush.description,
+          date: exercisesUpload.date,
+          duration: parseInt(exercisesUpload.duration),
+          description: exercisesUpload.description,
         });
       } catch (err) {
         console.log(err);
