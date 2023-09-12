@@ -65,9 +65,12 @@ users[index]['description'] = description
 users[index]['date'] = date || new Date().toDateString()
 users[index]['duration'] = parseInt(duration)
   
-  
+const organizedArray = users.map((data) => {
+    // Extract and modify properties
+    return { username: data.username, description: data.description, duration: data.duration, date: data.date, _id: data._id };
+  });
 
-  res.json( users[index] )
+  res.json( organizedArray[index] )
   
   
 });
