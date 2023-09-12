@@ -58,39 +58,16 @@ router.post('/users/:_id/exercises', (req, res) => {
   // Create an exercise log entry
   const logEntry = { username, description, duration: parseInt(duration), date: date || new Date().toDateString(), _id };
   
-  /*
-  if(found){
-    // count
-    if(!users[index]['count']){
-        users[index]['count'] = 0
-    }
-    // log array
-    if(!users[index]['log']){
-        users[index]['log'] = []
-    }
+  
 
-    users[index]['log'].push(logEntry);
-    users[index]['count']++
-
-    const lastLog = users[index]['log'][ users[index]['log'].length - 1]
-
-    const exercise = { username: users[index]['username'], description: lastLog['description'], duration: lastLog['duration'], date: lastLog['date'], _id: users[index]['_id'] }
-
-    return res.json( exercise )
-  } else {
-    res.status(404).json({ message: 'User not found' });
-    return;
-  }
-  */
-
- 
-
-
-exercise[_id] = logEntry
+//exercise[_id] = logEntry
+users[index]['description'] = description
+users[index]['date'] = date || new Date().toDateString()
+users[index]['duration'] = parseInt(duration)
   
   
 
-  res.json( exercise[_id] )
+  res.json( users[index] )
   
   
 });
