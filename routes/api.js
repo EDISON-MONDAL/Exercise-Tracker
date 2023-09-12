@@ -58,10 +58,9 @@ router.post("/users/:_id/exercises", async (req, res) => {
         description, 
         duration: parseInt(duration), 
         date: getDate
-     }
-
-      console.log(date);
-      console.log(exercisesUpload);
+      }
+      
+     
       try {
         const foundUser = await users.findOneAndUpdate({ _id: userId }, { $push: { logs: exercisesUpload } }, { new: true });
         res.json({
@@ -82,23 +81,24 @@ router.post("/users/:_id/exercises", async (req, res) => {
     try {
       const user = await users.findOne({ _id: req.params._id });
       const { from, to, limit } = req.query;
-      let temp = user.logs;
+      
+      let logArray = user.logs;
       
       if (from || to) {
-        temp = temp.filter(entry => {
+        logArray = logArray.filter(entry => {
         const entryDate = new Date(entry.date);
         return (!from || entryDate >= new Date(from)) && (!to || entryDate <= new Date(to));
         });
       }
   
       if (limit) {
-        temp = temp.slice(0, limit);
+        logArray = log.slice(0, limit);
       }
       res.json({
         _id: user._id,
         username: user.username,
-        count: temp.length,
-        log: temp
+        count: logArray.length,
+        log: logArray
       });
     } catch (err) {
       console.log(err)
