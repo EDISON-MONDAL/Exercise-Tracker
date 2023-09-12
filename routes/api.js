@@ -60,17 +60,16 @@ router.post("/users/:_id/exercises", async (req, res) => {
       })
     } else {
       //const exercisesToPush = new exercises(description, duration, date);
-      let definedDate = ''
-      let undefinedDate = ''
+      let getDate = ''
       if (date) {
-        definedDate = new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).replace(/,/g, '');
+        getDate = new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).replace(/,/g, '');
       } else {
-        undefinedDate = new Date().toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, '');
+        getDate = new Date().toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(/,/g, '');
       }
       const exercisesToPush = { 
         description, 
         duration: parseInt(duration), 
-        date: definedDate || undefinedDate
+        date: getDate
      }
 
       console.log(date);
