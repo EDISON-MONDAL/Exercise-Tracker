@@ -5,7 +5,7 @@ const uuid = require('uuid');
 
 
 // Sample data storage (replace with a database in production)
-const users = [];
+let users = [];
 const exercise = {};
 
 // POST /api/users to create a new user
@@ -65,12 +65,12 @@ users[index]['description'] = description
 users[index]['date'] = date || new Date().toDateString()
 users[index]['duration'] = parseInt(duration)
   
-const organizedArray = users.map((data) => {
+users = users.map((data) => {
     // Extract and modify properties
     return { username: data.username, description: data.description, duration: data.duration, date: data.date, _id: data._id };
   });
 
-  res.json( organizedArray[index] )
+  res.json( users[index] )
   
   
 });
