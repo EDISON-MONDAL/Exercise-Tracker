@@ -82,23 +82,23 @@ router.post("/users/:_id/exercises", async (req, res) => {
       const user = await users.findOne({ _id: req.params._id });
       const { from, to, limit } = req.query;
       
-      let log = user.logs;
+      let logArr = user.logs;
       
       if (from || to) {
-        log = log.filter(entry => {
+        logArr = logArr.filter(entry => {
         const entryDate = new Date(entry.date);
         return (!from || entryDate >= new Date(from)) && (!to || entryDate <= new Date(to));
         });
       }
   
       if (limit) {
-        log = log.slice(0, limit);
+        logArr = logArr.slice(0, limit);
       }
       res.json({
         _id: user._id,
         username: user.username,
-        count: log.length,
-        log: log
+        count: logArr.length,
+        log: logArr
       });
     } catch (err) {
       console.log(err)
